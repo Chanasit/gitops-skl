@@ -28,4 +28,4 @@ spec:
     spec:
       containers:
       - name: node-js-postgresql-crud-example
-        image: 3141hjkl/node-js-postgresql-crud-example:1.0.0 # {"$imagepolicy": "developement:node-js-postgresql-crud-example"}
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.0 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
