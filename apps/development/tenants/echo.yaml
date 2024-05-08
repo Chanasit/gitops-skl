@@ -1,3 +1,20 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: random-logger
+  labels:
+    app.kubernetes.io/part-of: random-logger
+spec:
+  imageRepositoryRef:
+    name: random-logger
+    namespace: flux-system
+  filterTags:
+    pattern: '^1.0.0-(?P<id>[0-9]+)$'
+    extract: '$id.0.0'
+  policy:
+    semver:
+      range: '>=1.0.0'
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -13,4 +30,4 @@ spec:
     spec:
       containers:
       - name: random-logger
-        image: chentex/random-logger:latest
+        image: chentex/random-logger:1.0.0 # {"$imagepolicy": "developement:random-logger:tag"}

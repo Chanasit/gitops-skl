@@ -1,11 +1,10 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
-  name: echo
+  name: random-logger
 spec:
   image: chentex/random-logger
   interval: 1m0s
-  provider: gcp
   accessFrom:
     namespaceSelectors:
       - matchLabels: {}
