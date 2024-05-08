@@ -12,6 +12,7 @@ spec:
         name: bitnami
         namespace: flux-system
       version: 10.7.0  # Example version, replace with the desired version
+  interval: 1h0m0s
   values:
     postgresqlUsername: postgres
     postgresqlPassword: 123
