@@ -1,0 +1,20 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: postgresql
+spec:
+  releaseName: postgresql
+  chart:
+    repositoryRef:
+      name: bitnami
+    name: postgresql
+    version: 10.7.0  # Example version, replace with the desired version
+  values:
+    postgresqlUsername: postgres
+    postgresqlPassword: 123
+    postgresqlDatabase: testdb
+    persistence:
+      enabled: true
+      size: 10Gi
+    service:
+      type: ClusterIP
