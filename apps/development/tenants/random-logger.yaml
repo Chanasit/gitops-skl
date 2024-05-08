@@ -10,10 +10,10 @@ spec:
     namespace: flux-system
   filterTags:
     pattern: '^v1.0.0-(?P<id>[0-9]+)$'
-    extract: '$id.0.0'
+    extract: '$ts'
   policy:
-    semver:
-      range: '>=1.0.0'
+    numerical:
+      order: asc
 ---
 apiVersion: apps/v1
 kind: Deployment
