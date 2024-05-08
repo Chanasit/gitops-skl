@@ -1,9 +1,9 @@
 apiVersion: image.toolkit.fluxcd.io/v1beta2
 kind: ImageRepository
 metadata:
-  name: random-logger
+  name: node-js-postgresql-crud-example
 spec:
-  image: chentex/random-logger
+  image: 3141hjkl/node-js-postgresql-crud-example
   interval: 1m0s
   accessFrom:
     namespaceSelectors:

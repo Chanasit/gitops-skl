@@ -4,4 +4,4 @@ namespace: development
 resources:
   - "automation.yaml"
   - "namespace.yaml"
-  - "random-logger.yaml"
+  - "node-js-postgresql-crud-example.yaml"

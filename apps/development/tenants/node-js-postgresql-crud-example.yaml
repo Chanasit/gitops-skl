@@ -1,0 +1,31 @@
+apiVersion: image.toolkit.fluxcd.io/v1beta2
+kind: ImagePolicy
+metadata:
+  name: node-js-postgresql-crud-example
+spec:
+  imageRepositoryRef:
+    name: node-js-postgresql-crud-example
+    namespace: flux-system
+  filterTags:
+    pattern: '^1.0.(?P<id>[0-9]+)$'
+    extract: '$id.0.0'
+  policy:
+    semver:
+      range: '>=1.0.0'
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-js-postgresql-crud-example
+spec:
+  selector:
+    matchLabels:
+      app: node-js-postgresql-crud-example
+  template:
+    metadata:
+      labels:
+        app: node-js-postgresql-crud-example
+    spec:
+      containers:
+      - name: node-js-postgresql-crud-example
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.0 # {"$imagepolicy": "developement:node-js-postgresql-crud-example:tag"}
