@@ -41,6 +41,3 @@ spec:
         username: postgres
         password: 123
         database: testdb
-      service:
-        ports:
-          postgresql: "5432"
