@@ -5,10 +5,13 @@ metadata:
 spec:
   releaseName: postgresql
   chart:
-    repositoryRef:
-      name: bitnami
-    name: postgresql
-    version: 10.7.0  # Example version, replace with the desired version
+    spec:
+      chart: postgresql
+      sourceRef:
+        kind: HelmRepository
+        name: bitnami
+        namespace: flux-system
+      version: 10.7.0  # Example version, replace with the desired version
   values:
     postgresqlUsername: postgres
     postgresqlPassword: 123
