@@ -8,12 +8,12 @@ spec:
   imageRepositoryRef:
     name: random-logger
     namespace: flux-system
-  filterTags:
-    pattern: '^v1.0.0-(?P<id>[0-9]+)$'
-    extract: '$ts'
   policy:
-    numerical:
-      order: asc
+    semver:
+      range: ">=1.0.0 <2.0.0"
+  filters:
+    - imagepath:
+        regex: '^chentex/random-logger:v\d+\.\d+\.\d+$'
 ---
 apiVersion: apps/v1
 kind: Deployment
