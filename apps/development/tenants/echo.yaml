@@ -9,7 +9,7 @@ spec:
     name: random-logger
     namespace: flux-system
   filterTags:
-    pattern: '^1.0.0-(?P<id>[0-9]+)$'
+    pattern: '^v1.0.0-(?P<id>[0-9]+)$'
     extract: '$id.0.0'
   policy:
     semver:
@@ -30,4 +30,4 @@ spec:
     spec:
       containers:
       - name: random-logger
-        image: chentex/random-logger:1.0.0 # {"$imagepolicy": "developement:random-logger:tag"}
+        image: chentex/random-logger:v1.0.0 # {"$imagepolicy": "developement:random-logger:tag"}
