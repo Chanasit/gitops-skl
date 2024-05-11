@@ -1,15 +1,4 @@
 apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: jenkins-credentials
-  labels:
-    app: jenkins
-data:
-  jenkins-credentials.txt: |
-    webhook-url=https://github.com/example/webhook
-    webhook-secret=your-webhook-secret
----
-apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: jenkins-pvc
@@ -34,6 +23,22 @@ spec:
       labels:
         app: jenkins
     spec:
+      initContainers:
+        - name: init-jenkins
+          image: busybox
+          env:
+            - name: ADMIN_USER
+              value: admin
+            - name: ADMIN_PASSWORD
+              value: jenkins!
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home
+          command:
+            - sh
+            - -c
+            - |
+              echo "jenkins.model.Jenkins.instance.securityRealm.createAccount('$ADMIN_USER', '$ADMIN_PASSWORD')" | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ groovy =
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts
@@ -41,24 +46,14 @@ spec:
             - containerPort: 8080
             - containerPort: 50000
           env:
-            - name: ADMIN_USER
-              value: admin
-            - name: ADMIN_PASSWORD
-              value: jenkins!
             - name: JAVA_OPTS
               value: "-Djenkins.install.runSetupWizard=false"
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
-            - name: jenkins-credentials
-              mountPath: /run/secrets/jenkins-credentials
-              readOnly: true
       volumes:
         - name: jenkins-data
           emptyDir: {}
-        - name: jenkins-credentials
-          configMap:
-            name: jenkins-credentials
 
         # - name: jenkins-credentials
         #   secret:
