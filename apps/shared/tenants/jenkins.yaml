@@ -6,8 +6,6 @@ metadata:
     app: jenkins
 data:
   jenkins-credentials.txt: |
-    username=admin
-    password=jenkins!
     webhook-url=https://github.com/example/webhook
     webhook-secret=your-webhook-secret
 ---
@@ -42,6 +40,11 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 50000
+          env:
+            - name: ADMIN_USER
+              value: admin
+            - name: ADMIN_PASSWORD
+              value: jenkins!
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
@@ -51,7 +54,6 @@ spec:
       volumes:
         - name: jenkins-data
           emptyDir: {}
-
         - name: jenkins-credentials
           configMap:
             name: jenkins-credentials
