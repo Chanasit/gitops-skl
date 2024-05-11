@@ -11,6 +11,8 @@ data:
 
     CREATE DATABASE testdb;
     GRANT ALL PRIVILEGES ON DATABASE testdb TO postgres;
+
+    \c testdb;
     CREATE TABLE test(
       id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
       name TEXT NOT NULL,
@@ -85,6 +87,10 @@ spec:
       labels:
         app: postgres
     spec:
+      initContainers:
+        - name: init-script
+          image: busybox
+          command: ['sh', '-c', 'echo "Initialization complete" && sleep 10']
       containers:
         - name: postgres
           image: 'postgres:16'
@@ -99,6 +105,32 @@ spec:
               mountPath: /var/lib/postgresql/data
             - name: init-script
               mountPath: /docker-entrypoint-initdb.d
+          readinessProbe:
+            exec:
+              command:
+                - psql
+                - -U
+                - postgres
+                - -d
+                - postgres
+                - -c
+                - 'SELECT 1'
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            exec:
+              command:
+                - psql
+                - -U
+                - postgres
+                - -d
+                - postgres
+                - -c
+                - 'SELECT 1'
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            failureThreshold: 6
       volumes:
         - name: init-script
           configMap:
