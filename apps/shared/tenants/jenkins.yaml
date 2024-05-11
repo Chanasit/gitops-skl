@@ -45,6 +45,8 @@ spec:
               value: admin
             - name: ADMIN_PASSWORD
               value: jenkins!
+            - name: JAVA_OPTS
+              value: "-Djenkins.install.runSetupWizard=false"
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
