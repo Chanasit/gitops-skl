@@ -5,9 +5,9 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_DB: testdb
-  POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: 123
+  POSTGRES_DB: "testdb"
+  POSTGRES_USER: "postgres"
+  POSTGRES_PASSWORD: "123"
 ---
 apiVersion: v1
 kind: PersistentVolume
