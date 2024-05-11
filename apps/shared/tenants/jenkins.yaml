@@ -53,9 +53,14 @@ spec:
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
       volumes:
         - name: jenkins-data
           emptyDir: {}
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
         # - name: jenkins-credentials
         #   secret:
         #     secretName: jenkins-credentials
