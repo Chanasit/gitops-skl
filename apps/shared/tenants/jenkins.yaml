@@ -41,7 +41,6 @@ spec:
                 curl -X POST -H "$ADMIN_CRUMB" -d "json={'username': '$ADMIN_USER', 'password': '$ADMIN_PASSWORD'}" -H 'Content-Type: application/x-www-form-urlencoded' http://localhost:8080/securityRealm/createAccount
                 sleep 5
               done
-          retries: 60
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
