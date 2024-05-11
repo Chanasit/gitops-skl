@@ -42,26 +42,23 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
-          volumeMounts:
-            - name: jenkins-data
-              mountPath: /var/jenkins_home
-      initContainers:
-        - name: init-jenkins
-          image: curlimages/curl:latest
-          command:
-            - /bin/sh
-            - -c
-            - |
-              until curl -s -o /dev/null http://localhost:8080/login; do
-                echo "Waiting for Jenkins to be ready..."
-                sleep 5
-              done
-              echo "Jenkins is ready. Initializing..."
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - "/bin/sh"
+                  - "-c"
+                  - |
+                    until curl -s -o /dev/null http://localhost:8080/login; do
+                      echo "Waiting for Jenkins to be ready..."
+                      sleep 5
+                    done
+                    echo "Jenkins is ready. Initializing..."
 
-              # Add your initialization script here to create the admin user
-              ADMIN_USER=admin_username
-              ADMIN_PASSWORD=admin_password
-              curl -X POST -d "username=${ADMIN_USER}&password1=${ADMIN_PASSWORD}&password2=${ADMIN_PASSWORD}" http://localhost:8080/securityRealm/createAccountByAdmin
+                    # Add your initialization script here to create the admin user
+                    ADMIN_USER=admin_username
+                    ADMIN_PASSWORD=admin_password
+                    curl -X POST -d "username=${ADMIN_USER}&password1=${ADMIN_PASSWORD}&password2=${ADMIN_PASSWORD}" http://localhost:8080/securityRealm/createAccountByAdmin
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
