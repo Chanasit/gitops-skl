@@ -31,14 +31,14 @@ spec:
               value: admin
             - name: ADMIN_PASSWORD
               value: jenkins!
-          volumeMounts:
-            - name: jenkins-data
-              mountPath: /var/jenkins_home
           command:
             - sh
             - -c
             - |
-              echo "jenkins.model.Jenkins.instance.securityRealm.createAccount('$ADMIN_USER', '$ADMIN_PASSWORD')" | java -jar /var/jenkins_home/war/WEB-INF/jenkins-cli.jar -s http://localhost:8080/ groovy =
+              echo "jenkins.model.Jenkins.instance.securityRealm.createAccount('$ADMIN_USER', '$ADMIN_PASSWORD')" | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ groovy =
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts
