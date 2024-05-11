@@ -30,18 +30,10 @@ spec:
             - containerPort: 8080
             - containerPort: 50000
           command:
-            - /bin/sh
-            - -c
+            - "/bin/sh"
+            - "-c"
             - |
-              until curl -s -o /dev/null http://localhost:8080/login; do
-                echo "Waiting for Jenkins to be ready..."
-                sleep 5
-              done
-              echo "Jenkins is ready. Initializing..."
-              # Add your initialization script here to create the admin user
-              ADMIN_USER=admin_username
-              ADMIN_PASSWORD=admin_password
-              curl -X POST -d "username=${ADMIN_USER}&password1=${ADMIN_PASSWORD}&password2=${ADMIN_PASSWORD}" http://localhost:8080/securityRealm/createAccountByAdmin
+              exec java -Djenkins.install.runSetupWizard=false -jar /usr/share/jenkins/jenkins.war
           readinessProbe:
             httpGet:
               path: /login
@@ -50,16 +42,32 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
             failureThreshold: 3
-          env:
-            - name: JAVA_OPTS
-              value: "-Djenkins.install.runSetupWizard=false"
+          volumeMounts:
+            - name: jenkins-data
+              mountPath: /var/jenkins_home
+      initContainers:
+        - name: init-jenkins
+          image: curlimages/curl:latest
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until curl -s -o /dev/null http://localhost:8080/login; do
+                echo "Waiting for Jenkins to be ready..."
+                sleep 5
+              done
+              echo "Jenkins is ready. Initializing..."
+
+              # Add your initialization script here to create the admin user
+              ADMIN_USER=admin_username
+              ADMIN_PASSWORD=admin_password
+              curl -X POST -d "username=${ADMIN_USER}&password1=${ADMIN_PASSWORD}&password2=${ADMIN_PASSWORD}" http://localhost:8080/securityRealm/createAccountByAdmin
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
       volumes:
         - name: jenkins-data
           emptyDir: {}
-
         # - name: jenkins-credentials
         #   secret:
         #     secretName: jenkins-credentials
