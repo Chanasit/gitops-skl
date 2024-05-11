@@ -23,33 +23,25 @@ spec:
       labels:
         app: jenkins
     spec:
-      initContainers:
-        - name: init-jenkins
-          image: curlimages/curl:latest
-          env:
-            - name: ADMIN_USER
-              value: admin
-            - name: ADMIN_PASSWORD
-              value: jenkins!
-          command:
-            - /bin/sh
-            - -c
-            - |
-              until nc -z localhost 8080; do
-                echo "Waiting for Jenkins service to be available..."
-                ADMIN_CRUMB=$(curl -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
-                curl -X POST -H "$ADMIN_CRUMB" -d "json={'username': '$ADMIN_USER', 'password': '$ADMIN_PASSWORD'}" -H 'Content-Type: application/x-www-form-urlencoded' http://localhost:8080/securityRealm/createAccount
-                sleep 5
-              done
-          volumeMounts:
-            - name: jenkins-data
-              mountPath: /var/jenkins_home
       containers:
         - name: jenkins
           image: jenkins/jenkins:lts
           ports:
             - containerPort: 8080
             - containerPort: 50000
+          command:
+            - /bin/sh
+            - -c
+            - |
+              until curl -s -o /dev/null http://localhost:8080/login; do
+                echo "Waiting for Jenkins to be ready..."
+                sleep 5
+              done
+              echo "Jenkins is ready. Initializing..."
+              # Add your initialization script here to create the admin user
+              ADMIN_USER=admin_username
+              ADMIN_PASSWORD=admin_password
+              curl -X POST -d "username=${ADMIN_USER}&password1=${ADMIN_PASSWORD}&password2=${ADMIN_PASSWORD}" http://localhost:8080/securityRealm/createAccountByAdmin
           readinessProbe:
             httpGet:
               path: /login
