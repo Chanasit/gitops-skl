@@ -32,11 +32,16 @@ spec:
             - name: ADMIN_PASSWORD
               value: jenkins!
           command:
-            - sh
+            - /bin/sh
             - -c
             - |
-              ADMIN_CRUMB=$(curl -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
-              curl -X POST -H "$ADMIN_CRUMB" -d "json={'username': '$ADMIN_USER', 'password': '$ADMIN_PASSWORD'}" -H 'Content-Type: application/x-www-form-urlencoded' http://localhost:8080/securityRealm/createAccount
+              until nc -z localhost 8080; do
+                echo "Waiting for Jenkins service to be available..."
+                ADMIN_CRUMB=$(curl -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+                curl -X POST -H "$ADMIN_CRUMB" -d "json={'username': '$ADMIN_USER', 'password': '$ADMIN_PASSWORD'}" -H 'Content-Type: application/x-www-form-urlencoded' http://localhost:8080/securityRealm/createAccount
+                sleep 5
+              done
+          retries: 60
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
