@@ -25,7 +25,7 @@ spec:
     spec:
       initContainers:
         - name: init-jenkins
-          image: jenkins/jenkins:lts
+          image: curlimages/curl:latest
           env:
             - name: ADMIN_USER
               value: admin
@@ -35,7 +35,8 @@ spec:
             - sh
             - -c
             - |
-              echo "jenkins.model.Jenkins.instance.securityRealm.createAccount('$ADMIN_USER', '$ADMIN_PASSWORD')" | java -jar /usr/share/jenkins/jenkins-cli.jar -s http://localhost:8080/ groovy =
+              ADMIN_CRUMB=$(curl -s 'http://localhost:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,":",//crumb)')
+              curl -X POST -H "$ADMIN_CRUMB" -d "json={'username': '$ADMIN_USER', 'password': '$ADMIN_PASSWORD'}" -H 'Content-Type: application/x-www-form-urlencoded' http://localhost:8080/securityRealm/createAccount
           volumeMounts:
             - name: jenkins-data
               mountPath: /var/jenkins_home
@@ -45,6 +46,14 @@ spec:
           ports:
             - containerPort: 8080
             - containerPort: 50000
+          readinessProbe:
+            httpGet:
+              path: /login
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
           env:
             - name: JAVA_OPTS
               value: "-Djenkins.install.runSetupWizard=false"
