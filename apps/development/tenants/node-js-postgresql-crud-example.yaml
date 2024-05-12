@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: node-js-postgresql-crud-example
-        image: 3141hjkl/node-js-postgresql-crud-example:1.0.5-37 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.5-38 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
         resources:
           requests:
             cpu: 250m
