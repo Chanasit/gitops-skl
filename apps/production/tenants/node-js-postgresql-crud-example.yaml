@@ -34,6 +34,11 @@ spec:
       containers:
       - name: node-js-postgresql-crud-example
         image: 3141hjkl/node-js-postgresql-crud-example:1.0.5
+        resources:
+          requests:
+            cpu: 250m
+        ports:
+        - containerPort: 3000
         command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
 ---
 apiVersion: v1
