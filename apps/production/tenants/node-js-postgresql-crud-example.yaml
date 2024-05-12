@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: node-js-postgresql-crud-example
-        image: 3141hjkl/node-js-postgresql-crud-example:1.0.4
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.5
         command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]
 ---
 apiVersion: v1

@@ -7,7 +7,7 @@ spec:
     name: node-js-postgresql-crud-example
     namespace: development
   filterTags:
-    pattern: '^1.0.4-(?P<id>[0-9]+)$'
+    pattern: '^1.0.5-(?P<id>[0-9]+)$'
     extract: '$id.0.0'
   policy:
     semver:
