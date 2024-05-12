@@ -7,7 +7,7 @@ spec:
     name: node-js-postgresql-crud-example
     namespace: flux-system
   filterTags:
-    pattern: '^1.0.(?P<id>[0-9]+)$'
+    pattern: '^1.0.3-(?P<id>[0-9]+)$'
     extract: '$id.0.0'
   policy:
     semver:
@@ -29,3 +29,16 @@ spec:
       containers:
       - name: node-js-postgresql-crud-example
         image: 3141hjkl/node-js-postgresql-crud-example:1.0.3 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-js-postgresql-crud-example
+  labels:
+    app: node-js-postgresql-crud-example
+spec:
+  type: ClusterIP
+  ports:
+    - port: 4000
+  selector:
+    app: node-js-postgresql-crud-example
