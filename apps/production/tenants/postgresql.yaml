@@ -57,7 +57,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: /data/postgresql
+    path: /data/postgresql-prod
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
