@@ -46,7 +46,7 @@ data:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: postgres-volume
+  name: postgres-volume-prod
   labels:
     type: local
     app: postgres
@@ -62,7 +62,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: postgres-volume-claim
+  name: postgres-volume-claim-prod
   labels:
     app: postgres
 spec:
@@ -137,7 +137,7 @@ spec:
             name: postgres-init-script
         - name: postgresdata
           persistentVolumeClaim:
-            claimName: postgres-volume-claim
+            claimName: postgres-volume-claim-prod
 ---
 apiVersion: v1
 kind: Service
