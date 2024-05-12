@@ -22,8 +22,8 @@ spec:
     apiVersion: apps/v1
     kind: Deployment
     name: node-js-postgresql-crud-example
-  minReplicas: 2  # Minimum number of replicas
-  maxReplicas: 5  # Maximum number of replicas
+  minReplicas: 2 # Minimum number of replicas
+  maxReplicas: 5 # Maximum number of replicas
   metrics:
   - type: Resource
     resource:
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
       - name: node-js-postgresql-crud-example
-        image: 3141hjkl/node-js-postgresql-crud-example:1.0.5-32 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.5-33 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
         command: ["pm2-runtime", "start", "ecosystem.config.js", "--env", "development"]
 ---
 apiVersion: v1
