@@ -1,5 +1,8 @@
 # Gitops
 
+## Preview
+![alt text](cluster-preview.png "Title")
+
 ## Structure
 ```
 ├── apps
