@@ -3,3 +3,4 @@ kind: Kustomization
 namespace: production
 resources:
   - "node-js-postgresql-crud-example.yaml"
+  - "postgresql.yaml"
