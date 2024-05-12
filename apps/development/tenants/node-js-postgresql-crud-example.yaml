@@ -28,8 +28,8 @@ spec:
     spec:
       containers:
       - name: node-js-postgresql-crud-example
-        image: 3141hjkl/node-js-postgresql-crud-example:1.0.3-23 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
-        command: [ "pm2-runtime", "start", "ecosystem.config.js", "--env", "development"]
+        image: 3141hjkl/node-js-postgresql-crud-example:1.0.4-27 # {"$imagepolicy": "development:node-js-postgresql-crud-example"}
+        command: ["pm2-runtime", "start", "ecosystem.config.js", "--env", "development"]
 ---
 apiVersion: v1
 kind: Service
